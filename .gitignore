@@ -1,0 +1,7 @@
+sites/default/files/*
+sites/default/settings.php
+backup/*
+cache/*
+CVS
+.svn
+.DS_Store
