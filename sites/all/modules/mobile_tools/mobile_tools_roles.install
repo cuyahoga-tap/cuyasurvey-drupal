@@ -1,0 +1,35 @@
+<?php
+/**
+ * Installation file for the Mobile Tools Roles module
+ */
+function mobile_tools_roles_uninstall() {
+  $query = "SELECT * FROM {mobile_tools_roles_relations}";
+  $result = db_query($query);
+  foreach($result as $item) {
+    db_delete('role')
+    ->condition('rid', $item->mrid)
+    ->execute();
+  }
+}
+
+/**
+ * Schema for the roles relations table, to keep track of user roles and their mobile
+ * counterpart.
+ */
+function mobile_tools_roles_schema() {
+  $schema['mobile_tools_roles_relations'] = array(
+    'fields' => array(
+      'rid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'mrid' => array(
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+    ),
+  );
+  return $schema;
+}

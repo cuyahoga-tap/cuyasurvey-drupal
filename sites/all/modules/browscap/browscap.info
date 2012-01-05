@@ -1,0 +1,13 @@
+name = Browscap
+description = "Provides statistics on browsers and a replacement for PHPs get_browser() function."
+core = 7.x
+files[] = browscap.module
+files[] = browscap.install
+files[] = includes/admin.inc
+configure = admin/reports/browscap/settings
+; Information added by drupal.org packaging script on 2011-03-02
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "browscap"
+datestamp = "1299024146"
+

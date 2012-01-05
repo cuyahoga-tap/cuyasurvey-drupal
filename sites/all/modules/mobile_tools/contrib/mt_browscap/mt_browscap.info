@@ -1,0 +1,15 @@
+; $Id: 
+name = Browscap (Mobile Tools contrib)
+description = "This module integrates the Browscap module with Mobile tols for device detection"
+core = 7.x
+package = Mobile
+dependencies[] = browscap
+dependencies[] = mobile_tools
+files[] = mt_browscap.module
+
+; Information added by drupal.org packaging script on 2011-10-26
+version = "7.x-2.0-unstable1"
+core = "7.x"
+project = "mobile_tools"
+datestamp = "1319659535"
+

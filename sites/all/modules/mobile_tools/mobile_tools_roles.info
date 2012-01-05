@@ -1,0 +1,13 @@
+name = Mobile Tools Roles
+description = "This module gives a set of functionality to create mobile tools users"
+dependencies = "mobile_tools"
+core = 7.x
+package = Mobile
+files[] = mobile_tools_roles.install
+files[] = mobile_tools_roles.module
+; Information added by drupal.org packaging script on 2011-10-26
+version = "7.x-2.0-unstable1"
+core = "7.x"
+project = "mobile_tools"
+datestamp = "1319659535"
+

@@ -1,0 +1,61 @@
+<?php
+/**
+ * @file
+ * Instalation of the mobile_tools module
+ *
+ */
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Removing the mobile user roles from the role table
+ * Cleanup of the variables
+ */
+function mobile_tools_uninstall() {
+  variable_del('default_main_nodes_mobile');
+  variable_del('default_main_nodes_original');
+  variable_del('site_frontpage_mobile');
+  variable_del('mobile_tools_enable_build_mode');
+  variable_del('desktop_notification');
+  variable_del('mobile_notification');
+  variable_del('mobile_tools_redirect_exceptions');
+  variable_del('mobile_tools_redirect_exceptions_type');
+  variable_del('mobile_tools_cookie_session');
+  variable_del('mobile_tools_redirect');
+  variable_del('mobile_tools_desktop_url');
+  variable_del('mobile_tools_mobile_url');
+  variable_del('mobile_tools_theme_switch');
+  variable_del('mobile_tools_theme_name');
+  variable_del('mobile_tools_device_detection');
+  variable_del('mobile_tools_device_capabilities');
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Rename variable names with a dash to comply with Drupal coding standards.
+ */
+function mobile_tools_update_7200() {
+  // Load the t function in case it isn't loaded yet
+  $t = get_t();
+  
+  $mt_device_detection = variable_get('mobile-tools-device-detection', 'mobile_tools');
+  $mt_device_capabilities = variable_get('mobile-tools-device-capabilities', 'wurfl');
+  $mt_device_capability = variable_get('mobile-tools-device-capability', 'wurfl');
+  $mt_theme_switch = variable_get('mobile-tools-theme-switch', 'mobile-tools-no-switch');
+  $mt_site_type_detection = variable_get('mobile-tools-site-type-detection', 'mobile_tools');
+
+  variable_set('mobile_tools_device_detection', $mt_device_detection);
+  variable_set('mobile_tools_device_capabilities', $mt_device_capabilities);
+  variable_set('mobile_tools_device_capability', $mt_device_capability);
+  variable_set('mobile_tools_theme_switch', $mt_theme_switch);
+  variable_set('mobile_tools_site_type_detection', $mt_site_type_detection);
+
+  variable_del('mobile-tools-device-detection');
+  variable_del('mobile-tools-device-capabilities');
+  variable_del('mobile-tools-device-capability');
+  variable_del('mobile-tools-theme-switch');
+  variable_del('mobile-tools-site-type-detection');
+
+  return $t('Renamed incorrect variable names.');
+}
