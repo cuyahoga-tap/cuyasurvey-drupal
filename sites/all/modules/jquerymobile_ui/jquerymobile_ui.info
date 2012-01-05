@@ -1,0 +1,16 @@
+name = jQuery Mobile UI
+description = jQuery Mobile functions for developers.
+package = Mobile
+core = 7.x
+configure = admin/config/system/jquerymobile_ui
+version = 7.x-1.x
+
+dependencies[] = libraries
+
+stylesheets[all][] = jquerymobile_ui.css
+; Information added by drupal.org packaging script on 2011-12-03
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "jquerymobile_ui"
+datestamp = "1322872234"
+

@@ -1,0 +1,305 @@
+<?php
+// $Id$
+
+/** @file
+ * Provides the jQuery Mobile library to modules and themes that request it.
+ */
+
+/**
+ * Path to jQuery Mobile module.
+ *
+ * During site installation, JQUERYMOBILE_UI_PATH is the absolute path to the
+ * jQuery Mobile module.  At all other times JQUERYMOBILE_UI_PATH is relative, and
+ * safe for use in URLs.
+ */
+if (defined('MAINTENANCE_MODE') && MAINTENANCE_MODE == 'install') {
+  define('JQUERYMOBILE_UI_PATH', dirname(__FILE__) . '/jquerymobile_ui');
+}
+else {
+  define('JQUERYMOBILE_UI_PATH', drupal_get_path('module', 'jquerymobile_ui') . '/jquerymobile_ui');
+}
+
+if ($jqm_path = libraries_get_path('jquery.mobile')) {
+  define('JQUERYMOBILE_UI_PLUGIN_PATH', $jqm_path);
+  define('JQUERYMOBILE_UI_PLUGIN_JS_FILE', 'jquery.mobile-1.0.js');
+  define('JQUERYMOBILE_UI_PLUGIN_STRUCTURE_FILE', 'jquery.mobile.structure-1.0.css');
+  define('JQUERYMOBILE_UI_PLUGIN_CSS_FILE', 'jquery.mobile-1.0.css');
+}
+else {
+  define('JQUERYMOBILE_UI_PLUGIN_PATH', '');
+  define('JQUERYMOBILE_UI_PLUGIN_JS_FILE', '');
+  define('JQUERYMOBILE_UI_PLUGIN_STRUCTURE_FILE', '');
+  define('JQUERYMOBILE_UI_PLUGIN_CSS_FILE', '');
+}
+
+if ($jq_path = libraries_get_path('jquery')) {
+  define('JQUERYMOBILE_UI_JQUERY_PATH', $jq_path);
+  define('JQUERYMOBILE_UI_JQUERY_FILE', 'jquery-1.6.4.js');
+}
+else {
+  define('JQUERYMOBILE_UI_JQUERY_PATH', '');
+  define('JQUERYMOBILE_UI_JQUERY_FILE', '');
+}
+
+if($jqm_custom = libraries_get_path('jquery.custom')) {
+  define('JQUERYMOBILE_UI_CUSTOM_PATH', $jqm_custom);
+  define('JQUERYMOBILE_UI_CUSTOM_JS_FILE', 'jquery.custom.js');
+  define('JQUERYMOBILE_UI_CUSTOM_CSS_FILE', 'jquery.custom.css');
+}
+else {
+  define('JQUERYMOBILE_UI_CUSTOM_PATH', '');
+  define('JQUERYMOBILE_UI_CUSTOM_JS_FILE', '');
+  define('JQUERYMOBILE_UI_CUSTOM_CSS_FILE', '');
+}
+
+
+
+function jquerymobile_ui_init(){
+	$modules = module_list();
+	foreach ($modules as $module) {
+	  if (is_file(drupal_get_path('module', 'jquerymobile_ui') . '/modules/' . str_replace('_', '-', $module) . '.inc')) {
+	    require_once(drupal_get_path('module', 'jquerymobile_ui') . '/modules/' . str_replace('_', '-', $module) . '.inc');
+	  } 
+	}
+}
+
+function jquerymobile_ui_menu_alter(&$items) {
+  $custom_ron = variable_get('jquerymobile_ui_front', TRUE);
+  if($custom_ron) {
+    $items['node']['page callback'] = 'jquerymobile_ui_page_default';
+  }
+  return $items;
+}
+
+/**
+ * Menu callback; Generate a listing of promoted nodes.
+ */
+function jquerymobile_ui_page_default() {
+
+	$select = db_select('node', 'n')
+    ->fields('n', array('nid', 'sticky', 'created'))
+    ->condition('promote', 1)
+    ->condition('status', 1)
+    ->orderBy('sticky', 'DESC')
+    ->orderBy('created', 'DESC')
+    ->extend('PagerDefault')
+    ->limit(variable_get('default_nodes_main', 10))
+    ->addTag('node_access');
+
+  $nids = $select->execute()->fetchCol();
+
+  if (!empty($nids)) {
+    $nodes = node_load_multiple($nids);
+    $build = jquerymobile_ui_view_multiple($nodes);
+
+    // 'rss.xml' is a path, not a file, registered in node_menu().
+    drupal_add_feed('rss.xml', variable_get('site_name', 'Drupal') . ' ' . t('RSS'));
+    $build['pager'] = array(
+      '#theme' => 'pager',
+      '#weight' => 5,
+    );
+    drupal_set_title('');
+  }
+  else {
+    drupal_set_title(t('Welcome to @site-name', array('@site-name' => variable_get('site_name', 'Drupal'))), PASS_THROUGH);
+
+    $default_message = '<p>' . t('No front page content has been created yet.') . '</p>';
+
+    $default_links = array();
+    if (_node_add_access()) {
+      $default_links[] = l(t('Add new content'), 'node/add');
+    }
+    if (!empty($default_links)) {
+      $default_message .= theme('item_list', array('items' => $default_links));
+    }
+
+    $build['default_message'] = array(
+      '#markup' => $default_message,
+      '#prefix' => '<div id="first-time">',
+      '#suffix' => '</div>',
+    );
+  }
+  
+  return $build;
+
+}
+
+
+/**
+ * Implementation of hook_help().
+ */
+function jquerymobile_ui_help($path, $arg) {
+  switch ($path) {
+	  case 'admin/help#jquerymobile_ui':
+    case 'admin/config/system/jquerymobile_ui':
+      return t('The jquerymobile module allows you to set HTML attributes on the element of individual menu items, exposing certain values needed to enhance the <a href="http://drupal.org/project/mobile_jquery">mobile jquery</a> theme.');
+  }
+}
+
+/*
+ * Implements hook_permission().
+ *
+ */
+function jquerymobile_ui_permission() {
+	return array(
+		'manage jquerymobile settings' => array(
+			'title' => 'Manage jQuery Mobile Settings',
+		),
+		'manage jquerymobile files settings' => array(
+			'title' => 'Manage jQuery Mobile Files Settings',
+		),
+		'manage jquerymobile theme settings' => array(
+			'title' => 'Manage jQuery Mobile Theme Settings',
+		),
+		'manage jquerymobile advanced settings' => array(
+			'title' => 'Manage jQuery Mobile Advanced Settings',
+		),
+	);
+}
+
+
+/*
+ * Implements hook_menu().
+ *
+ */ 
+function jquerymobile_ui_menu() { 
+  $items = array(); 
+  $items['admin/config/system/jquerymobile_ui'] = array(
+    'title' => 'jQuery Mobile', 
+    'description' => 'Administer jQuery Mobile Settings.', 
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jquerymobile_ui_admin_settings'), 
+    'access arguments' => array('manage jquerymobile settings'),
+    'file' => 'jquerymobile_ui.admin.inc',
+  ); 
+  return $items;
+}
+
+function jquerymobile_ui_load_files() {
+ 
+  $new_scripts = ''; 
+  $new_scripts .= '<link type="text/css" rel="stylesheet" media="all" href="' . url(JQUERYMOBILE_UI_PLUGIN_PATH . '/' . variable_get('jquerymobile_ui_plugin_structure_file', JQUERYMOBILE_UI_PLUGIN_STRUCTURE_FILE)) . '">';
+  $new_scripts .= '<link type="text/css" rel="stylesheet" media="all" href="' . url(JQUERYMOBILE_UI_PLUGIN_PATH . '/' . variable_get('jquerymobile_ui_plugin_css_file', JQUERYMOBILE_UI_PLUGIN_CSS_FILE)) . '">';
+  $new_scripts .= '<link type="text/css" rel="stylesheet" media="all" href="' . url(JQUERYMOBILE_UI_CUSTOM_PATH . '/' . variable_get('jquerymobile_ui_custom_css_file', JQUERYMOBILE_UI_CUSTOM_CSS_FILE)) . '">';
+  $new_scripts .= '<script type="text/javascript" src="' . url(JQUERYMOBILE_UI_JQUERY_PATH . '/' . variable_get('jquerymobile_ui_jquery_file', JQUERYMOBILE_UI_JQUERY_FILE)) . '"></script>' . "\n";
+  $new_scripts .= '<script type="text/javascript">' . "\n";
+  $new_scripts .= '<!--//--><![CDATA[//><!--' . "\n";
+  $new_scripts .= _jquerymobile_ui_build_js() . "\n";
+  $new_scripts .= '//--><!]]>' . "\n";
+  $new_scripts .= '</script>' . "\n";
+  $new_scripts .= '<script type="text/javascript" src="' . url(JQUERYMOBILE_UI_CUSTOM_PATH . '/' . variable_get('jquerymobile_ui_custom_js_file', JQUERYMOBILE_UI_CUSTOM_JS_FILE)) . '"></script>' . "\n"; 
+  $new_scripts .= '<script type="text/javascript" src="' . url(JQUERYMOBILE_UI_PLUGIN_PATH . '/' . variable_get('jquerymobile_ui_plugin_js_file', JQUERYMOBILE_UI_PLUGIN_JS_FILE)) . '"></script>' . "\n"; 
+  
+  return $new_scripts;
+}
+
+function _jquerymobile_ui_build_js() {
+  $output = '';
+  $output .= 'var jqm = jQuery.noConflict();' . "\n";
+  $output .= 'jqm(document).bind("mobileinit", function(){' . "\n";
+  $output .= "\n\t" . 'jqm.mobile.ns = "' . variable_get('jquerymobile_ui_ns', '') . '";';
+  $output .= "\n\t" . 'jqm.mobile.autoInitializePage = ' . variable_get('jquerymobile_ui_autoInitializePage', 'true') . ';';
+  $output .= "\n\t" . 'jqm.mobile.subPageUrlKey = "' . variable_get('jquerymobile_ui_subPageUrlKey', 'ui-page') . '";';
+  $output .= "\n\t" . 'jqm.mobile.activePageClass = "' . variable_get('jquerymobile_ui_activePageClass', 'ui-page-active') . '";';
+  $output .= "\n\t" . 'jqm.mobile.activeBtnClass = "' . variable_get('jquerymobile_ui_activeBtnClass', 'ui-btn-active') . '";'; 
+  $output .= "\n\t" . 'jqm.mobile.ajaxEnabled = ' . variable_get('jquerymobile_ui_ajaxEnabled', 'true') . ';';
+  $output .= "\n\t" . 'jqm.mobile.hashListeningEnabled = ' . variable_get('jquerymobile_ui_hashListeningEnabled', 'true') . ';';
+  $output .= "\n\t" . 'jqm.mobile.defaultPageTransition = "' . variable_get('jquerymobile_ui_defaultPageTransition', 'slide') . '";';
+  $output .= "\n\t" . 'jqm.mobile.defaultDialogTransition = "' . variable_get('jquerymobile_ui_defaultDialogTransition', 'pop') . '";';
+  $output .= "\n\t" . 'jqm.mobile.minScrollBack = "' . variable_get('jquerymobile_ui_loadingMessage', '150') . '";';
+  $output .= "\n\t" . 'jqm.mobile.loadingMessage = "' . variable_get('jquerymobile_ui_loadingMessage', 'loading') . '";';
+  $output .= "\n\t" . 'jqm.mobile.pageLoadErrorMessage = "' . variable_get('jquerymobile_ui_pageLoadErrorMessage', 'Error') . '";';
+  $output .= "\n\t" . 'jqm.mobile.linkBindingEnabled = "' . variable_get('jquerymobile_ui_linkBindingEnabled', 'true') . ';';
+  $output .= "\n\t" . 'jqm.mobile.pushStateEnabled = "' . variable_get('jquerymobile_ui_pushStateEnabled', 'true') . ';';
+  $output .= "\n\t" . 'jqm.mobile.touchOverflowEnabled = "' . variable_get('jquerymobile_ui_touchOverflowEnabled', 'false') . ';';
+  $output .= "\n});";
+    
+  return $output;
+}
+
+function _jquerymobile_ui_get_custom_themes() {
+  $custom_themes = variable_get('jquerymobile_ui_custom_themes', '');
+  $custom_theme_sets = explode("\n", $custom_themes);
+  $options = array();
+  foreach ($custom_theme_sets as $key => $value) {
+    $options[$custom_theme_sets[$key]] = $value;
+  }
+  
+  return $options;
+}
+
+
+/**
+ * Implements hook_element_info_alter().
+ */
+function jquerymobile_ui_element_info_alter(&$type) {
+  // add a custom pre_render function to checkboxes elements
+  if (isset($type['checkboxes']['#pre_render'])) {
+    $type['checkboxes']['#pre_render'][] = 'jquerymobile_ui_pre_render_checkboxes';
+  }
+  else {
+    $type['checkboxes']['#pre_render'] = array('jquerymobile_ui_pre_render_checkboxes');
+  }
+
+  // add default #multiple value to checkboxes as false
+  if (!isset($type['checkbox']['#multiple'])) {
+    $type['checkbox']['#multiple'] = FALSE;
+  }
+
+  // add a new process function to actions type
+  // add a custom pre_render function to checkboxes elements
+  if (isset($type['actions']['#process'])) {
+    $type['actions']['#process'][] = 'jquerymobile_ui_process_actions';
+  }
+  else {
+    $type['actions']['#process'] = array('jquerymobile_ui_process_actions');
+  }
+
+  if (isset($type['text_format'])) {
+    $type['text_format']['#process'][] = 'jquerymobile_ui_process_text_format';
+  }
+
+}
+/**
+ * @todo: make flip switches work
+ */
+function jquerymobile_ui_pre_render_checkboxes($element) {
+  $count = count($element['#options']);
+  if (count($element['#options']) != 1) {
+    foreach ($element['#options'] as $key => $choice) {
+      $element[$key]['#multiple'] = TRUE;
+    }
+  }
+  
+  return $element;
+}
+
+
+function jquerymobile_ui_process_actions($element) {
+  $number_letters = array(1 => 'a', 2 => 'b', 3 => 'c', 4 => 'd', 5 => 'e');
+  $children = element_children($element);
+  $count = count($children) - 1;
+  if ($count) {
+    $element['#attributes']['class'][] = 'ui-grid-' . $number_letters[$count];
+    $grid_block_count = 1;
+    foreach ($children as $key) {
+      $element[$key]['#prefix'] = '<div class="ui-block-' . $number_letters[$grid_block_count] . '">';
+      $element[$key]['#suffix'] = '</div>';
+      $grid_block_count++;
+    }
+  }
+
+  return $element;
+}
+
+
+function jquerymobile_ui_process_text_format($element) {
+  $element['format']['#prefix'] = '<div data-' . variable_get('jquerymobile_ui_ns', '') . 'role="collapsible" data-' . variable_get('jquerymobile_ui_ns', '') . 'collapsed="true"><h3>' . t('Text Format') . '</h3>';
+  $element['format']['#suffix'] = '</div>';
+  $element['format']['help']['#weight'] = 100;
+  // remove element title since it is added above
+  $element['format']['format']['#title'] = NULL;
+
+  return $element;
+}
+

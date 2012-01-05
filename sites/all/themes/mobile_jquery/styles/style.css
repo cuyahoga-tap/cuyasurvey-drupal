@@ -1,0 +1,113 @@
+.ui-page-active { position: relative !important; }
+.ui-mobile .toolbar > .page { top: 30px; }
+.ui-mobile .toolbar-drawer > .page { top: 65px; }
+
+.ui-icon.ui-icon-help,
+.ui-icon.ui-icon-configure,
+.ui-icon.ui-icon-permissions,
+.ui-icon.ui-icon-edit,
+.ui-icon.ui-icon-list {
+	background: 						#666;
+	background: 						rgba(0,0,0,.4);
+	background-image: url(../images/icons-18-white.png);
+	background-repeat: no-repeat;
+	-moz-border-radius: 				9px;
+	-webkit-border-radius: 				9px;
+	border-radius: 						9px;
+}
+
+.ui-icon-alt.ui-icon-help,
+.ui-icon-alt.ui-icon-configure,
+.ui-icon-alt.ui-icon-permissions,
+.ui-icon-alt.ui-icon-edit,
+.ui-icon-alt.ui-icon-list {
+	background: 						#fff;
+	background: 						rgba(255,255,255,.3);
+	background-image: url(../images/icons-18-black.png);
+	background-repeat: no-repeat;
+}
+
+.ui-icon.ui-icon-permissions,.ui-icon-alt.ui-icon-permissions { background-position: 2px -1px; }
+.ui-icon.ui-icon-configure,.ui-icon.ui-icon-configure { background-position: -71px -1px; }
+.ui-icon.ui-icon-help,.ui-icon-alt.ui-icon-help {background-position: -35px -1px; }
+.ui-icon.ui-icon-edit,.ui-icon-alt.ui-icon-edit { background-position: -147px -2px; }
+.ui-icon.ui-icon-list,.ui-icon-alt.ui-icon-list { background-position: -186px -1px; }
+
+/**/
+.pager {text-align: center;}
+.pager .ui-btn-inner { padding: 5px 10px; }
+.region-populated { display: none; }
+
+.pager.ui-controlgroup {
+  margin-top: 25px;
+}
+.ui-select { width: auto !important; }
+
+label {
+  display: block;
+  font-weight: bold;
+}
+label.option {
+  display: inherit;
+  font-weight: inherit;
+}
+
+form .container-inline div, form .container-inline label {
+display: block;
+}
+
+tr.even, tr.odd { background-color: transparent; border-bottom: none; }
+th { border: none; }
+
+div.contextual-links-wrapper { top: -5px; }
+div.contextual-links-wrapper .ui-controlgroup-horizontal .ui-btn,
+div.contextual-links-wrapper .ui-controlgroup-horizontal .ui-checkbox, 
+div.contextual-links-wrapper .ui-controlgroup-horizontal .ui-radio { margin-right: -1px !important; }
+
+div.contextual-links-wrapper a,
+#system-modules a.module-link.ui-btn {
+	display: inline-block;
+}
+/* media queries */
+
+@media all and (min-width: 650px) {
+  .content-secondary {
+    text-align: left;
+    float: left;
+    width: 45%;
+    background: none;
+    border-top: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  .content-primary {
+    width: 45%;
+    float: right;
+    margin: 0;
+    padding: 0;
+  }
+}
+@media all and (min-width: 750px) {
+  .content-secondary {
+    width: 34%;
+  }
+  .content-primary {
+    width: 56%;
+    padding-right: 1%;
+  }  
+}
+
+@media all and (min-width: 1200px) {
+  .content-secondary {
+    width: 30%;
+    padding-right:6%;
+    margin: 0;
+  }
+  .content-primary {
+    width: 50%;
+    margin-right: 5%;
+    padding-right: 3%;
+  }
+}
+
