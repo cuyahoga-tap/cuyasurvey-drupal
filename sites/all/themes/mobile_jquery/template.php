@@ -53,10 +53,10 @@ function mobile_jquery_preprocess_html(&$vars) {
 			'cache' => TRUE, 
 			'defer' => FALSE,
 	  );
-	 drupal_add_css('sites/all/libraries/jquery.mobile-1.0b1/jquery.mobile-1.0b1.css', $css_options);
-	 drupal_add_js('sites/all/libraries/jquery-1.6.2.js', array_merge($js_options, array('weight' => 100)));
+	 drupal_add_css('sites/all/libraries/jquery.mobile-1.0/jquery.mobile-1.0.css', $css_options);
+	 drupal_add_js('sites/all/libraries/jquery-1.6.2.min.js', array_merge($js_options, array('weight' => 100)));
 	 drupal_add_js(path_to_theme() . '/scripts/mobile_jquery.js', array_merge($js_options, array('weight' => 101)));
-	 drupal_add_js('sites/all/libraries/jquery.mobile-1.0b1/jquery.mobile-1.0b1.js', array_merge($js_options, array('weight' => 101)));
+	 drupal_add_js('sites/all/libraries/jquery.mobile-1.0/jquery.mobile-1.0.js', array_merge($js_options, array('weight' => 101)));
 	}
 }
 
