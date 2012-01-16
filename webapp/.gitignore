@@ -1,18 +1,13 @@
 # Ignore configuration files that may contain sensitive information.
 sites/*/settings.php
-webapp/sites/*/settings.php
 
 # Ignore paths that contain user-generated content.
 sites/*/files
-webapp/sites/*/files
 sites/*/private
-webapp/sites/*/private
 
 # Drush and Boost
 backup/*
-webapp/backup/*
 cache/*
-webapp/cache/*
 
 # Other version control metadata
 CVS
