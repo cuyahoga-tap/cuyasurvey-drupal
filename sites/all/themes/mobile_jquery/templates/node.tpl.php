@@ -78,13 +78,6 @@
  * @see template_process()
  */
 ?>
-<?php if (module_exists('jquerymobile_ui') && variable_get('jquerymobile_ui_front', TRUE) && $is_front): ?>
-		<?php
-			hide($content['comments']);
-			hide($content['links']);
-			print l('<h2>' . $node->title . '</h2>' . render($content), $node->uri['path'], array('html' => TRUE)); 
-		?>
-<?php else: ?>
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
   <?php print $user_picture; ?>
@@ -108,10 +101,10 @@
       hide($content['links']);
       print render($content);
     ?>
+
   <?php print render($content['links']); ?>
+
   <?php print render($content['comments']); ?>
   </div>
 
-
 </div>
-<?php endif; ?>
