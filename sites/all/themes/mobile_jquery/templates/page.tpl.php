@@ -7,8 +7,11 @@
           <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
         </h1>
       <?php endif; ?>
+
+      <?php if ($page['attributes_array']['header']['back-button'] != "false"): ?>
 			<a href="../../" title="<?php print t('Back'); ?>" data-rel="back" data-icon="back" data-direction="reverse"><span><?php print t('Back'); ?></span></a>
-			
+			<?php endif; ?>
+
       <?php if(!$is_front): ?>
 			<a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" data-rel="home" data-icon="home" data-ajax="false"><span><?php print t('Home'); ?></span></a>
 			<?php endif; ?>

@@ -237,6 +237,12 @@ function mobile_jquery_form_system_theme_settings_alter(&$form, &$form_state) {
       '#default_value' => mobile_jquery_theme_get_setting('header_data_position'),
       '#options'       => $position_options,
     );
+		$form['mobile_jquery_settings']['header_styles']['header_back_button'] = array(
+		  '#type'          => 'radios',
+		  '#title'         => t('Show "Back" button'),
+		  '#default_value' => mobile_jquery_theme_get_setting('header_back_button'),
+		  '#options'       => $boolean_options,
+		);
     
 //CONTENT  
   $form['mobile_jquery_settings']['content_styles'] = array(

@@ -98,6 +98,7 @@ function mobile_jquery_preprocess_page(&$vars) {
 		'data-theme' => mobile_jquery_theme_get_setting('use_global') ? mobile_jquery_theme_get_setting('global_theme') : mobile_jquery_theme_get_setting('header_data_theme'),
 		'data-position' => mobile_jquery_theme_get_setting('global_header_data_position') ? mobile_jquery_theme_get_setting('global_header_data_position') : mobile_jquery_theme_get_setting('header_data_position'),
 	  'data-role' => 'header',
+	  'back-button' => mobile_jquery_theme_get_setting('header_back_button'),
 	);
 	$vars['page']['attributes_array']['content'] = array(
 		'data-theme' => mobile_jquery_theme_get_setting('use_global') ? mobile_jquery_theme_get_setting('global_theme') : mobile_jquery_theme_get_setting('content_data_theme'),

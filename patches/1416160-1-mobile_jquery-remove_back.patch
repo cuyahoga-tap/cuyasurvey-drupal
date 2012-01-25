@@ -1,0 +1,58 @@
+diff --git a/mobile_jquery.info b/mobile_jquery.info
+index 1f8585f..053957a 100644
+--- a/mobile_jquery.info
++++ b/mobile_jquery.info
+@@ -40,6 +40,7 @@ settings[menu_item_splittheme] = 'a'
+ settings[menu_item_spliticon] = 'plus'
+ settings[header_data_theme] = 'a'
+ settings[header_data_position] = 'inline'
++settings[header_back_button] = 'true'
+ settings[content_data_theme] = 'a'
+ settings[footer_data_theme] = 'a'
+ settings[footer_data_position] = 'inline'
+diff --git a/template.php b/template.php
+index 4fedafa..9b75504 100644
+--- a/template.php
++++ b/template.php
+@@ -98,6 +98,7 @@ function mobile_jquery_preprocess_page(&$vars) {
+ 		'data-theme' => mobile_jquery_theme_get_setting('use_global') ? mobile_jquery_theme_get_setting('global_theme') : mobile_jquery_theme_get_setting('header_data_theme'),
+ 		'data-position' => mobile_jquery_theme_get_setting('global_header_data_position') ? mobile_jquery_theme_get_setting('global_header_data_position') : mobile_jquery_theme_get_setting('header_data_position'),
+ 	  'data-role' => 'header',
++	  'back-button' => mobile_jquery_theme_get_setting('header_back_button'),
+ 	);
+ 	$vars['page']['attributes_array']['content'] = array(
+ 		'data-theme' => mobile_jquery_theme_get_setting('use_global') ? mobile_jquery_theme_get_setting('global_theme') : mobile_jquery_theme_get_setting('content_data_theme'),
+diff --git a/templates/page.tpl.php b/templates/page.tpl.php
+index e0f8b0f..3a67176 100644
+--- a/templates/page.tpl.php
++++ b/templates/page.tpl.php
+@@ -7,8 +7,11 @@
+           <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
+         </h1>
+       <?php endif; ?>
++
++      <?php if ($page['attributes_array']['header']['back-button'] != "false"): ?>
+ 			<a href="../../" title="<?php print t('Back'); ?>" data-rel="back" data-icon="back" data-direction="reverse"><span><?php print t('Back'); ?></span></a>
+-			
++			<?php endif; ?>
++
+       <?php if(!$is_front): ?>
+ 			<a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" data-rel="home" data-icon="home" data-ajax="false"><span><?php print t('Home'); ?></span></a>
+ 			<?php endif; ?>
+diff --git a/theme-settings.php b/theme-settings.php
+index d7f4e89..b23d7c5 100644
+--- a/theme-settings.php
++++ b/theme-settings.php
+@@ -237,6 +237,12 @@ function mobile_jquery_form_system_theme_settings_alter(&$form, &$form_state) {
+       '#default_value' => mobile_jquery_theme_get_setting('header_data_position'),
+       '#options'       => $position_options,
+     );
++		$form['mobile_jquery_settings']['header_styles']['header_back_button'] = array(
++		  '#type'          => 'radios',
++		  '#title'         => t('Show "Back" button'),
++		  '#default_value' => mobile_jquery_theme_get_setting('header_back_button'),
++		  '#options'       => $boolean_options,
++		);
+     
+ //CONTENT  
+   $form['mobile_jquery_settings']['content_styles'] = array(
