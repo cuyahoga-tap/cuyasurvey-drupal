@@ -6,6 +6,7 @@ core = 7.x
 
 scripts[] = 'scripts/script.js'
 stylesheets[all][] = 'styles/style.css'
+stylesheets[all][] = 'styles/custom.css'
 
 regions[header] = 'Header'
 regions[highlighted] = 'Highlighted'
