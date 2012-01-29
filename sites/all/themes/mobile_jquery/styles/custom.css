@@ -1,5 +1,39 @@
+/*
+ * General
+ */
+a,
+a:link,
+a:visited {
+  text-decoration: none;
+}
+
+
+/*
+ * Header
+ */
 .ui-header .ui-title,
 .ui-footer .ui-title {
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+
+
+/*
+ * Footer
+ */
+.footer.ui-footer.ui-bar-b {
+  color: #F0F0F0;
+  text-shadow: 0 1px 0 #0d3649;
+  background: -moz-linear-gradient(#1b4f68, #124157) repeat scroll 0 0 #124157;
+  font-weight: normal;
+  font-size: 10pt;
+  text-align: center;
+}
+.footer.ui-footer.ui-bar-b a,
+.footer.ui-footer.ui-bar-b a:link,
+.footer.ui-footer.ui-bar-b a:visited {
+  text-shadow: 0 1px 0 #062432;
+}
+.footer.ui-footer.ui-bar-b a:hover {
+  color: #04821F;
 }
