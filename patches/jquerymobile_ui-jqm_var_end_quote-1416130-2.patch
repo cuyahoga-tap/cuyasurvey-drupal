@@ -1,5 +1,5 @@
 diff --git a/jquerymobile_ui.module b/jquerymobile_ui.module
-index 61f8e52..f0691f0 100644
+index 61f8e52..7c4f80c 100644
 --- a/jquerymobile_ui.module
 +++ b/jquerymobile_ui.module
 @@ -209,9 +209,9 @@ function _jquerymobile_ui_build_js() {
@@ -9,9 +9,9 @@ index 61f8e52..f0691f0 100644
 -  $output .= "\n\t" . 'jqm.mobile.linkBindingEnabled = "' . variable_get('jquerymobile_ui_linkBindingEnabled', 'true') . ';';
 -  $output .= "\n\t" . 'jqm.mobile.pushStateEnabled = "' . variable_get('jquerymobile_ui_pushStateEnabled', 'true') . ';';
 -  $output .= "\n\t" . 'jqm.mobile.touchOverflowEnabled = "' . variable_get('jquerymobile_ui_touchOverflowEnabled', 'false') . ';';
-+  $output .= "\n\t" . 'jqm.mobile.linkBindingEnabled = "' . variable_get('jquerymobile_ui_linkBindingEnabled', 'true') . '";';
-+  $output .= "\n\t" . 'jqm.mobile.pushStateEnabled = "' . variable_get('jquerymobile_ui_pushStateEnabled', 'true') . '";';
-+  $output .= "\n\t" . 'jqm.mobile.touchOverflowEnabled = "' . variable_get('jquerymobile_ui_touchOverflowEnabled', 'false') . '";';
++  $output .= "\n\t" . 'jqm.mobile.linkBindingEnabled = ' . variable_get('jquerymobile_ui_linkBindingEnabled', 'true') . ';';
++  $output .= "\n\t" . 'jqm.mobile.pushStateEnabled = ' . variable_get('jquerymobile_ui_pushStateEnabled', 'true') . ';';
++  $output .= "\n\t" . 'jqm.mobile.touchOverflowEnabled = ' . variable_get('jquerymobile_ui_touchOverflowEnabled', 'false') . ';';
    $output .= "\n});";
      
    return $output;

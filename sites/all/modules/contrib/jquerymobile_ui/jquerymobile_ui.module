@@ -209,9 +209,9 @@ function _jquerymobile_ui_build_js() {
   $output .= "\n\t" . 'jqm.mobile.minScrollBack = "' . variable_get('jquerymobile_ui_loadingMessage', '150') . '";';
   $output .= "\n\t" . 'jqm.mobile.loadingMessage = "' . variable_get('jquerymobile_ui_loadingMessage', 'loading') . '";';
   $output .= "\n\t" . 'jqm.mobile.pageLoadErrorMessage = "' . variable_get('jquerymobile_ui_pageLoadErrorMessage', 'Error') . '";';
-  $output .= "\n\t" . 'jqm.mobile.linkBindingEnabled = "' . variable_get('jquerymobile_ui_linkBindingEnabled', 'true') . '";';
-  $output .= "\n\t" . 'jqm.mobile.pushStateEnabled = "' . variable_get('jquerymobile_ui_pushStateEnabled', 'true') . '";';
-  $output .= "\n\t" . 'jqm.mobile.touchOverflowEnabled = "' . variable_get('jquerymobile_ui_touchOverflowEnabled', 'false') . '";';
+  $output .= "\n\t" . 'jqm.mobile.linkBindingEnabled = ' . variable_get('jquerymobile_ui_linkBindingEnabled', 'true') . ';';
+  $output .= "\n\t" . 'jqm.mobile.pushStateEnabled = ' . variable_get('jquerymobile_ui_pushStateEnabled', 'true') . ';';
+  $output .= "\n\t" . 'jqm.mobile.touchOverflowEnabled = ' . variable_get('jquerymobile_ui_touchOverflowEnabled', 'false') . ';';
   $output .= "\n});";
     
   return $output;
