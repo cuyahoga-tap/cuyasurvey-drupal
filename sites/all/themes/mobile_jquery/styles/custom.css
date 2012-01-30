@@ -25,6 +25,7 @@ a:visited {
   color: #F0F0F0;
   text-shadow: 0 1px 0 #0d3649;
   background: -moz-linear-gradient(#1b4f68, #124157) repeat scroll 0 0 #124157;
+  background-image: none;
   font-weight: normal;
   font-size: 10pt;
   text-align: center;
