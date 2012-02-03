@@ -110,6 +110,10 @@ function mobile_jquery_preprocess_page(&$vars) {
 	  'data-role' => 'footer',
 	);
 
+  // Remove breadcrumbs if disabled
+  if (theme_get_setting('breadcrumbs_display') == 0) {
+    $vars['breadcrumb'] = '';
+  }
 }
 
 
@@ -355,21 +359,28 @@ function mobile_jquery_preprocess_forums(&$vars) {
 			'data-role' => 'button',
 		),
 	);
-  // Breadcrumb navigation:
-  $breadcrumb[] = l(t('Home'), NULL, $options);
-  if ($vars['tid']) {
-    $breadcrumb[] = l($vocabulary->name, 'forum', $options);
-  }
-  if ($vars['parents']) {
-    $vars['parents'] = array_reverse($vars['parents']);
-    foreach ($vars['parents'] as $p) {
-      if ($p->tid == $vars['tid']) {
-        $title = $p->name;
-      }
-      else {
-        $breadcrumb[] = l($p->name, 'forum/' . $p->tid, $options);
+
+
+  // Remove breadcrumbs if disabled
+  if (theme_get_setting('breadcrumbs_display') != 0) {
+    // Breadcrumb navigation:
+    $breadcrumb[] = l(t('Home'), NULL, $options);
+    if ($vars['tid']) {
+      $breadcrumb[] = l($vocabulary->name, 'forum', $options);
+    }
+    if ($vars['parents']) {
+      $vars['parents'] = array_reverse($vars['parents']);
+      foreach ($vars['parents'] as $p) {
+        if ($p->tid == $vars['tid']) {
+          $title = $p->name;
+        }
+        else {
+          $breadcrumb[] = l($p->name, 'forum/' . $p->tid, $options);
+        }
       }
     }
+  } else {
+    $breadcrumb = '';
   }
   drupal_set_breadcrumb($breadcrumb);
 

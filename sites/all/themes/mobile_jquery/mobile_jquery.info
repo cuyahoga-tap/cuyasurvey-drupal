@@ -19,6 +19,7 @@ regions[footer] = 'Footer'
 settings[rebuild_registry] = 1
 settings[use_global] = 1
 settings[viewport] = 'width=device-width; initial-scale=1; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;'
+settings[breadcrumbs_display] = 1
 settings[global_icon] = 'arrow-r'
 settings[global_inset] = 'true'
 settings[global_theme] = 'a'

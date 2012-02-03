@@ -68,7 +68,7 @@ function mobile_jquery_form_system_theme_settings_alter(&$form, &$form_state) {
     '#description'   => t('Modify the viewport as needed.'),
     '#default_value' => mobile_jquery_theme_get_setting('viewport') ? mobile_jquery_theme_get_setting('viewport') : 'width=device-width; initial-scale=1; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;',
   );
-    
+
 // GLOBAL  
   $form['mobile_jquery_settings']['global_styles'] = array(
     '#type' => 'fieldset',
@@ -112,7 +112,13 @@ function mobile_jquery_form_system_theme_settings_alter(&$form, &$form_state) {
 	    '#default_value' => mobile_jquery_theme_get_setting('global_footer_data_position'),
 	    '#options'       => $position_options,
     );
-  
+    // Breadcrumbs
+    $form['mobile_jquery_settings']['global_styles']['breadcrumbs_display'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Display breadcrumbs'),
+      '#default_value' => theme_get_setting('breadcrumbs_display'),
+    );
+
 //ITEM LISTS  
   $form['mobile_jquery_settings']['item_list_styles'] = array(
     '#type' => 'fieldset',
