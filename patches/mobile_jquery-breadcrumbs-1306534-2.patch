@@ -1,0 +1,97 @@
+diff --git a/mobile_jquery.info b/mobile_jquery.info
+index 1f8585f..fd1cffd 100644
+--- a/mobile_jquery.info
++++ b/mobile_jquery.info
+@@ -18,6 +18,7 @@ regions[footer] = 'Footer'
+ settings[rebuild_registry] = 1
+ settings[use_global] = 1
+ settings[viewport] = 'width=device-width; initial-scale=1; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;'
++settings[breadcrumbs_display] = 1
+ settings[global_icon] = 'arrow-r'
+ settings[global_inset] = 'true'
+ settings[global_theme] = 'a'
+diff --git a/template.php b/template.php
+index 4fedafa..8093b85 100644
+--- a/template.php
++++ b/template.php
+@@ -109,6 +109,10 @@ function mobile_jquery_preprocess_page(&$vars) {
+ 	  'data-role' => 'footer',
+ 	);
+ 
++  // Remove breadcrumbs if disabled
++  if (theme_get_setting('breadcrumbs_display') == 0) {
++    $vars['breadcrumb'] = '';
++  }
+ }
+ 
+ 
+@@ -354,21 +358,28 @@ function mobile_jquery_preprocess_forums(&$vars) {
+ 			'data-role' => 'button',
+ 		),
+ 	);
+-  // Breadcrumb navigation:
+-  $breadcrumb[] = l(t('Home'), NULL, $options);
+-  if ($vars['tid']) {
+-    $breadcrumb[] = l($vocabulary->name, 'forum', $options);
+-  }
+-  if ($vars['parents']) {
+-    $vars['parents'] = array_reverse($vars['parents']);
+-    foreach ($vars['parents'] as $p) {
+-      if ($p->tid == $vars['tid']) {
+-        $title = $p->name;
+-      }
+-      else {
+-        $breadcrumb[] = l($p->name, 'forum/' . $p->tid, $options);
++
++
++  // Remove breadcrumbs if disabled
++  if (theme_get_setting('breadcrumbs_display') != 0) {
++    // Breadcrumb navigation:
++    $breadcrumb[] = l(t('Home'), NULL, $options);
++    if ($vars['tid']) {
++      $breadcrumb[] = l($vocabulary->name, 'forum', $options);
++    }
++    if ($vars['parents']) {
++      $vars['parents'] = array_reverse($vars['parents']);
++      foreach ($vars['parents'] as $p) {
++        if ($p->tid == $vars['tid']) {
++          $title = $p->name;
++        }
++        else {
++          $breadcrumb[] = l($p->name, 'forum/' . $p->tid, $options);
++        }
+       }
+     }
++  } else {
++    $breadcrumb = '';
+   }
+   drupal_set_breadcrumb($breadcrumb);
+ 
+diff --git a/theme-settings.php b/theme-settings.php
+index d7f4e89..1500bf1 100644
+--- a/theme-settings.php
++++ b/theme-settings.php
+@@ -68,7 +68,7 @@ function mobile_jquery_form_system_theme_settings_alter(&$form, &$form_state) {
+     '#description'   => t('Modify the viewport as needed.'),
+     '#default_value' => mobile_jquery_theme_get_setting('viewport') ? mobile_jquery_theme_get_setting('viewport') : 'width=device-width; initial-scale=1; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;',
+   );
+-    
++
+ // GLOBAL  
+   $form['mobile_jquery_settings']['global_styles'] = array(
+     '#type' => 'fieldset',
+@@ -112,7 +112,13 @@ function mobile_jquery_form_system_theme_settings_alter(&$form, &$form_state) {
+ 	    '#default_value' => mobile_jquery_theme_get_setting('global_footer_data_position'),
+ 	    '#options'       => $position_options,
+     );
+-  
++    // Breadcrumbs
++    $form['mobile_jquery_settings']['global_styles']['breadcrumbs_display'] = array(
++      '#type' => 'checkbox',
++      '#title' => t('Display breadcrumbs'),
++      '#default_value' => theme_get_setting('breadcrumbs_display'),
++    );
++
+ //ITEM LISTS  
+   $form['mobile_jquery_settings']['item_list_styles'] = array(
+     '#type' => 'fieldset',
