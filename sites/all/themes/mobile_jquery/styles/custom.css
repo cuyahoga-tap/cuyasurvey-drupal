@@ -22,10 +22,23 @@ a:visited {
  * Footer
  */
 .footer.ui-footer.ui-bar-b {
-  color: #F0F0F0;
-  text-shadow: 0 1px 0 #0d3649;
-  background: -moz-linear-gradient(#1b4f68, #124157) repeat scroll 0 0 #124157;
-  background-image: none;
+  color: #0D3649;
+  text-shadow: 0 1px 0 #a6b6be;
+
+  background-image: linear-gradient(bottom, #D5E6EE 41%, #BDD4DE 72%);
+  background-image: -o-linear-gradient(bottom, #D5E6EE 41%, #BDD4DE 72%);
+  background-image: -moz-linear-gradient(bottom, #D5E6EE 41%, #BDD4DE 72%);
+  background-image: -webkit-linear-gradient(bottom, #D5E6EE 41%, #BDD4DE 72%);
+  background-image: -ms-linear-gradient(bottom, #D5E6EE 41%, #BDD4DE 72%);
+  
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.41, #D5E6EE),
+    color-stop(0.72, #BDD4DE)
+  );
+
   font-weight: normal;
   font-size: 10pt;
   text-align: center;
@@ -33,7 +46,7 @@ a:visited {
 .footer.ui-footer.ui-bar-b a,
 .footer.ui-footer.ui-bar-b a:link,
 .footer.ui-footer.ui-bar-b a:visited {
-  text-shadow: 0 1px 0 #062432;
+  text-shadow: 0 1px 0 #D5E6EE;
 }
 .footer.ui-footer.ui-bar-b a:hover {
   color: #04821F;
