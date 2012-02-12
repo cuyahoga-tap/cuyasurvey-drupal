@@ -1,0 +1,78 @@
+diff --git a/includes/modules/taxonomy.inc b/includes/modules/taxonomy.inc
+index d7fdd7e..cb1895f 100644
+--- a/includes/modules/taxonomy.inc
++++ b/includes/modules/taxonomy.inc
+@@ -39,9 +39,9 @@ function taxonomy_uuid_node_features_export_render_alter(&$export, &$node, $modu
+ function taxonomy_uuid_node_features_rebuild_alter(&$node, $module) {
+   if (!empty($node->uuid_term)) {
+     $node->taxonomy = array();
++    $tids = entity_get_id_by_uuid('taxonomy_term', $node->uuid_term);
+     foreach ($node->uuid_term as $uuid) {
+-      $tid = uuid_taxonomy_term_find($uuid);
+-      if (empty($tid)) {
++      if (empty($tids[$uuid])) {
+         // If no tid was found, then the term doesn't exist, and most likely
+         // the uuid_term rebuild needs to run first.
+         // TODO: figure out how to weight feature components.
+@@ -53,9 +53,11 @@ function taxonomy_uuid_node_features_rebuild_alter(&$node, $module) {
+           watchdog('uuid_features', 'The term specified by %uuid could not be found.', array('%uuid' => $uuid));
+           continue;
+         }
++      } else {
++        $tid = $tids[$uuid];
+       }
+ 
+       $node->taxonomy[] = $tid;
+     }
+   }
+-}
++}
+\ No newline at end of file
+diff --git a/includes/uuid_term.features.inc b/includes/uuid_term.features.inc
+index a1b4d5b..497abac 100644
+--- a/includes/uuid_term.features.inc
++++ b/includes/uuid_term.features.inc
+@@ -5,6 +5,14 @@
+  */
+ 
+ /**
++ * Get term id from its uuid
++ * @param string $uuid
++ */
++function uuid_taxonomy_term_find($uuid) {
++  return reset(entity_get_id_by_uuid('taxonomy_term', array($uuid)));
++}
++
++/**
+  * Implements hook_features_export_options().
+  */
+ function uuid_term_features_export_options() {
+diff --git a/uuid_features.module b/uuid_features.module
+index fc49eed..453369a 100644
+--- a/uuid_features.module
++++ b/uuid_features.module
+@@ -6,7 +6,6 @@
+ function uuid_features_features_api() {
+   $components = array();
+ 
+-  if (module_exists('uuid_node')) {
+     $components['uuid_node'] = array(
+       'name' => t('Content'),
+       'features_source' => TRUE,
+@@ -14,8 +13,6 @@ function uuid_features_features_api() {
+       'default_file' => FEATURES_DEFAULTS_INCLUDED,
+       'file' => drupal_get_path('module', 'uuid_features') . '/includes/uuid_node.features.inc',
+     );
+-  }
+-  if (module_exists('uuid_taxonomy')) {
+     $components['uuid_vocabulary'] = array(
+       'name' => t('Vocabulary'),
+       'default_hook' => 'uuid_features_default_vocabularies',
+@@ -28,7 +25,6 @@ function uuid_features_features_api() {
+       'default_file' => FEATURES_DEFAULTS_INCLUDED,
+       'file' => drupal_get_path('module', 'uuid_features') . '/includes/uuid_term.features.inc',
+     );
+-  }
+ 
+   // Depends on http://drupal.org/node/808690
+   if (function_exists('uuid_file_insert')) {
