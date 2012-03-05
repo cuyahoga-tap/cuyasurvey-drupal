@@ -18,6 +18,11 @@ function mobile_jquery_form_system_theme_settings_alter(&$form, &$form_state) {
     'd' => t('Grey'),
     'e' => t('Yellow')
   );
+
+  if (module_exists('jquerymobile_ui')) {
+    $theme_settings = array_merge($theme_settings, _jquerymobile_ui_get_custom_themes());
+  }
+
   
   $icon_options = array(
    'arrow-r' => t('Right arrow'),
