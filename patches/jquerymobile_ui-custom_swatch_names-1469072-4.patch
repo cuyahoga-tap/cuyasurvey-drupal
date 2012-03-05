@@ -1,0 +1,49 @@
+diff --git a/jquerymobile_ui.admin.inc b/jquerymobile_ui.admin.inc
+index 261f2bc..fc9f8d5 100644
+--- a/jquerymobile_ui.admin.inc
++++ b/jquerymobile_ui.admin.inc
+@@ -40,12 +40,11 @@ function jquerymobile_ui_admin_settings() {
+     '#description'   => t('If the front page the default river of news, this option will create a link list.'),
+     '#default_value' => variable_get('jquerymobile_ui_front', 'true'),
+   );
+-  
+   $form['jquerymobile_ui']['theme_settings']['jquerymobile_ui_custom_themes'] = array(
+     '#type' => 'textarea',
+     '#default_value' => variable_get('jquerymobile_ui_custom_themes', ''),
+     '#title' => t('Custom Mobile Themes'),
+-    '#description' => t('Enter the extension(s) of your custom theme(s) seperated by an new line.'),
++    '#description' => t('Add new swatches or rename existing swatches. One per line, in <em>css_key|value</em> format, like <em>a|My Swatch</em> or <em>g|Red</em>.'),
+   );
+   
+ /*    FILE SETTINGS    */
+diff --git a/jquerymobile_ui.module b/jquerymobile_ui.module
+index 61f8e52..3c7dfae 100644
+--- a/jquerymobile_ui.module
++++ b/jquerymobile_ui.module
+@@ -217,18 +217,22 @@ function _jquerymobile_ui_build_js() {
+   return $output;
+ }
+ 
++/*
++ * Add custom swatches as options.
++ *
++ * Allows renaming existing swatches or adding new ones.
++ */
+ function _jquerymobile_ui_get_custom_themes() {
+   $custom_themes = variable_get('jquerymobile_ui_custom_themes', '');
+   $custom_theme_sets = explode("\n", $custom_themes);
+   $options = array();
+-  foreach ($custom_theme_sets as $key => $value) {
+-    $options[$custom_theme_sets[$key]] = $value;
++  foreach ($custom_theme_sets as $set_str) {
++    $set = explode("|", $set_str);
++    $options[$set[0]] = $set[1];
+   }
+-  
+   return $options;
+ }
+ 
+-
+ /**
+  * Implements hook_element_info_alter().
+  */

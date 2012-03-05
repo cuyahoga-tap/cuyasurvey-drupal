@@ -217,17 +217,21 @@ function _jquerymobile_ui_build_js() {
   return $output;
 }
 
+/*
+ * Add custom swatches as options.
+ *
+ * Allows renaming existing swatches or adding new ones.
+ */
 function _jquerymobile_ui_get_custom_themes() {
   $custom_themes = variable_get('jquerymobile_ui_custom_themes', '');
   $custom_theme_sets = explode("\n", $custom_themes);
   $options = array();
-  foreach ($custom_theme_sets as $key => $value) {
-    $options[$custom_theme_sets[$key]] = $value;
+  foreach ($custom_theme_sets as $set_str) {
+    $set = explode("|", $set_str);
+    $options[$set[0]] = $set[1];
   }
-  
   return $options;
 }
-
 
 /**
  * Implements hook_element_info_alter().

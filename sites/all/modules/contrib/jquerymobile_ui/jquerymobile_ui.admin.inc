@@ -40,12 +40,11 @@ function jquerymobile_ui_admin_settings() {
     '#description'   => t('If the front page the default river of news, this option will create a link list.'),
     '#default_value' => variable_get('jquerymobile_ui_front', 'true'),
   );
-  
   $form['jquerymobile_ui']['theme_settings']['jquerymobile_ui_custom_themes'] = array(
     '#type' => 'textarea',
     '#default_value' => variable_get('jquerymobile_ui_custom_themes', ''),
     '#title' => t('Custom Mobile Themes'),
-    '#description' => t('Enter the extension(s) of your custom theme(s) seperated by an new line.'),
+    '#description' => t('Add new swatches or rename existing swatches. One per line, in <em>css_key|value</em> format, like <em>a|My Swatch</em> or <em>g|Red</em>.'),
   );
   
 /*    FILE SETTINGS    */
