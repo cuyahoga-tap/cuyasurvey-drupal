@@ -28,7 +28,7 @@ function role_theme_switcher_custom_theme()
 function role_theme_switcher_menu()
 {
   $items['admin/people/permissions/themes'] = array(
-    'type'            => MENU_NORMAL_ITEM,
+    'type'            => MENU_LOCAL_TASK,
     'title'           => 'Role theme switcher',
     'description'     => 'Settings for role theme switcher.',
     'page callback'   => 'drupal_get_form',
