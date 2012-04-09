@@ -1,5 +1,4 @@
 <?php
-// $Id: role_theme_switcher.module,v 1.7 2010/11/28 17:55:24 tiutiun Exp $
 
 /**
  * Implementation of hook_custom_theme()
@@ -11,7 +10,7 @@ function role_theme_switcher_custom_theme()
 
   foreach ($user->roles as $id => $role)
   {
-    $role_theme = variable_get('role_theme_switcher_'.$id.'_theme', '');
+    $role_theme = variable_get('role_theme_switcher_' . $id . '_theme', '');
 
     if ($role_theme != 'Default')
     {
@@ -27,7 +26,7 @@ function role_theme_switcher_custom_theme()
  */
 function role_theme_switcher_menu()
 {
-  $items['admin/people/permissions/themes'] = array(
+  $items['admin/people/rolethemeswitcher'] = array(
     'type'            => MENU_LOCAL_TASK,
     'title'           => 'Role theme switcher',
     'description'     => 'Settings for role theme switcher.',
@@ -48,17 +47,31 @@ function role_theme_switcher_admin_settings()
 
   // Get all themes
   $themes = list_themes();
-  $themes_list = array_merge(array('Default'), array_keys($themes));
+
+  $themes_list = array('Default');
+
+  foreach ($themes AS $theme_name => $theme)
+  {
+    if (drupal_theme_access($theme))
+    {
+    	$themes_list[] = $theme_name;
+    }
+  }
+
 
   foreach ($roles as $id => $role)
   {
-    $form['role_theme_switcher_'.$id.'_theme'] = array(
+    $form['role_theme_switcher_' . $id . '_theme'] = array(
        '#type'          => 'select',
-       '#title'         => ucfirst(strtolower($role)),
+       '#title'         => drupal_ucfirst(drupal_strtolower($role)),
        '#options'       => drupal_map_assoc($themes_list),
-       '#default_value' => variable_get('role_theme_switcher_'.$id.'_theme', '')
+       '#default_value' => variable_get('role_theme_switcher_' . $id . '_theme', '')
     );
   }
+
+    $form['hint'] = array(
+       '#markup'        => t('Only enabled themes are shown. You can manage themes in') . ' ' . l('Appearance', 'admin/appearance') . ' ' . t('section'),
+  );
 
   return system_settings_form($form);
 }

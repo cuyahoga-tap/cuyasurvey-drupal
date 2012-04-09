@@ -7,12 +7,11 @@ DESCRIPTION
 -----------
 Useful Drupal module to assign separate themes for different roles (including anonymous) in your system.
 
-Often you want to separate Drupal administrative interface from frontend. You can do this assigning appropriate theme for you as user. What to do if you want to show different theme for non-authorized user?
+Often you want to separate Drupal administrative interface from frontend. You can do this assigning appropriate theme for you as user.
+What to do if you want to show different theme for non-authorized user?
 
-Please note that this module overwrites themes set in Home->Administer->Site configuration->Administration theme or set as default in Home->Administer->Site building->Themes. So if you do not want to overwrite this settings - you should set for your role in Role Theme Switcher a "default" theme, thus your settings won't be overwritten.
-
-Version 1.x was written for Drupal 5.0 by tiutiun. http://drupal.org/user/158669
-Project rewritten by owahab. http://drupal.org/user/75702
+Please note that this module overwrites themes set as default in admin/appearance. So if you do not want to overwrite this
+settings - you should set for your role in Role Theme Switcher a "default" theme, thus your settings won't be overwritten.
 
 
 REQUIREMENTS
@@ -24,19 +23,16 @@ INSTALLING
 ----------
 1. To install the module copy the 'role_theme_switcher' folder to your sites/all/modules directory.
 
-2. Go to admin/build/modules. Enable the module.
+2. Go to admin/modules. Enable the module.
 Read more about installing modules at http://drupal.org/node/70151
 
 
 CONFIGURING AND USING
 ---------------------
-Go to admin/user/themes Follow instructions on this page.
+Go to admin/people/rolethemeswitcher. Follow instructions on this page.
 
-Please note that this module overwrites themes set in admin/settings/admin
-(Home->Administer->Site configuration->Administration theme)
-or set as default in admin/build/themes (Home->Administer->Site building->Themes). So if you do not want to
-overwrite this settings - you should set for your role in Role Theme Switcher a "default" theme,
-thus your settings won't be overwritten.
+Please note that this module overwrites themes set as default in admin/appearance. So if you do not want to overwrite this
+settings - you should set for your role in Role Theme Switcher a "default" theme, thus your settings won't be overwritten.
 
 
 REPORTING ISSUE. REQUESTING SUPPORT. REQUESTING NEW FEATURE. CONTRIBUTE.
