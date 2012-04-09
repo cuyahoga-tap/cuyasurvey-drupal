@@ -21,7 +21,7 @@ a:visited {
 /*
  * Footer
  */
-.footer.ui-footer.ui-bar-b {
+.footer.ui-footer.ui-bar-a {
   color: #0D3649;
   text-shadow: 0 1px 0 #a6b6be;
 
@@ -43,11 +43,11 @@ a:visited {
   font-size: 10pt;
   text-align: center;
 }
-.footer.ui-footer.ui-bar-b a,
-.footer.ui-footer.ui-bar-b a:link,
-.footer.ui-footer.ui-bar-b a:visited {
+.footer.ui-footer.ui-bar-a a,
+.footer.ui-footer.ui-bar-a a:link,
+.footer.ui-footer.ui-bar-a a:visited {
   text-shadow: 0 1px 0 #D5E6EE;
 }
-.footer.ui-footer.ui-bar-b a:hover {
+.footer.ui-footer.ui-bar-a a:hover {
   color: #04821F;
 }
