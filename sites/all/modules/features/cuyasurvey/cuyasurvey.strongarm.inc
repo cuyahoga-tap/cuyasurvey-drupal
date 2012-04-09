@@ -55,6 +55,13 @@ function cuyasurvey_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
+  $strongarm->name = 'jquerymobile_ui_custom_themes';
+  $strongarm->value = 'a|Cuyahoga County';
+  $export['jquerymobile_ui_custom_themes'] = $strongarm;
+
+  $strongarm = new stdClass();
+  $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
+  $strongarm->api_version = 1;
   $strongarm->name = 'jquerymobile_ui_defaultDialogTransition';
   $strongarm->value = 'pop';
   $export['jquerymobile_ui_defaultDialogTransition'] = $strongarm;
